@@ -1,0 +1,19 @@
+{
+  "name": "note-taking-api",
+  "version": "1.0.0",
+  "description": "CRUD OPERATIONS WITH AUTHENTICATION FOR NOTE TAKING APP",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GbemigadEngineer/Note-Taking-API.git"
+  },
+  "author": "Oluwagbemiga Oduwole",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GbemigadEngineer/Note-Taking-API/issues"
+  },
+  "homepage": "https://github.com/GbemigadEngineer/Note-Taking-API#readme"
+}
