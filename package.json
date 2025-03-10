@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/GbemigadEngineer/Note-Taking-API/issues"
   },
-  "homepage": "https://github.com/GbemigadEngineer/Note-Taking-API#readme"
+  "homepage": "https://github.com/GbemigadEngineer/Note-Taking-API#readme",
+  "dependencies": {
+    "morgan": "^1.10.0"
+  }
 }
