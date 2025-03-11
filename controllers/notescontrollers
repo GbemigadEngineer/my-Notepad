@@ -1,0 +1,44 @@
+"use strict";
+
+//  get all notes
+exports.getAllNotes = (req, res) => {
+  res.status(200).json({
+    status: "Success",
+    message: "All notes fetched succesfully!",
+  });
+};
+// create a note
+exports.createNote = (req, res) => {
+  res.status(201).json({
+    status: "success",
+    message: "Note created successfully!",
+  });
+};
+// delete all notes
+exports.deleteAllNotes = (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "All notes deleted successfully!",
+  });
+};
+// get a note by id
+exports.getNotebyId = (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "Note fetched successfully!",
+  });
+};
+// update a note
+exports.updateNote = (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "Note updated successfully!",
+  });
+};
+// delete a note
+exports.deleteNote = (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "Note Deleted Successfully!",
+  });
+};
