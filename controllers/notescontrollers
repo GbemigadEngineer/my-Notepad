@@ -14,15 +14,9 @@ exports.createNote = (req, res) => {
     message: "Note created successfully!",
   });
 };
-// delete all notes
-exports.deleteAllNotes = (req, res) => {
-  res.status(200).json({
-    status: "success",
-    message: "All notes deleted successfully!",
-  });
-};
+
 // get a note by id
-exports.getNotebyId = (req, res) => {
+exports.getNoteById = (req, res) => {
   res.status(200).json({
     status: "success",
     message: "Note fetched successfully!",
