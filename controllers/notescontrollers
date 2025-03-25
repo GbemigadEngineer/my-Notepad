@@ -1,26 +1,73 @@
 "use strict";
-
+const Note = require("../models/Note.js")
 //  get all notes
-exports.getAllNotes = (req, res) => {
-  res.status(200).json({
-    status: "Success",
-    message: "All notes fetched succesfully!",
-  });
+exports.getAllNotes = async (req, res) => {
+  try{
+    const notes = await Note.getAllNotes()
+    res.status(200).json({
+      status: "Success",
+      message: "All notes fetched succesfully!",
+      result:{
+        data: notes
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error", 
+      message: error.message
+    })
+  }
+
 };
 // create a note
-exports.createNote = (req, res) => {
-  res.status(201).json({
-    status: "success",
-    message: "Note created successfully!",
-  });
+exports.createNote = async (req, res) => {
+  try{
+    const {title, content, color} = req.body
+    if(!content){
+      return res.status(400).json({status: "error", message:"Content is required"})
+    }
+    const newNote = await Note.createNote({title, content,color})
+    res.status(201).json({
+      status: "success",
+      message: "Note created successfully!",
+      result:{
+        data: newNote
+      }
+    });
+  } catch (error) {
+    res.status(500).json({status: "error", message:error.message})
+  }
+
 };
 
 // get a note by id
-exports.getNoteById = (req, res) => {
-  res.status(200).json({
-    status: "success",
-    message: "Note fetched successfully!",
-  });
+exports.getNoteById =  async (req, res) => {
+  try{
+    const {id} = request.params
+    const idNote =  await Note.getNoteById(id)
+    console.log(idNote)
+    // if note isnt found
+    if (!note){
+      return res.status(404).json({
+        status:"error",
+        message: "Note not found!"
+      })
+    }
+    // if note is found
+    res.status(200).json({
+      status: "success",
+      message: "Note fetched successfully!",
+      result:{
+        data:note
+      }
+    });
+  }catch(error){
+    res.status(500).json({
+      status: "error",
+      message: error.message
+    })
+  }
+
 };
 // update a note
 exports.updateNote = (req, res) => {

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Note = require("./models/Note")
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 
@@ -25,7 +26,10 @@ mongoose
 
 
 
- 
+
+
+// Run the test
+
 
 
 // Start the server
