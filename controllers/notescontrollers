@@ -1,85 +1,105 @@
 "use strict";
-const Note = require("../models/Note.js")
+const Note = require("../models/Note.js");
 //  get all notes
 exports.getAllNotes = async (req, res) => {
-  try{
-    const notes = await Note.getAllNotes()
+  try {
+    const notes = await Note.getAllNotes();
     res.status(200).json({
       status: "Success",
       message: "All notes fetched succesfully!",
-      result:{
-        data: notes
-      }
+      result: {
+        data: notes,
+      },
     });
   } catch (error) {
     res.status(500).json({
-      status: "error", 
-      message: error.message
-    })
+      status: "error",
+      message: error.message,
+    });
   }
-
 };
 // create a note
 exports.createNote = async (req, res) => {
-  try{
-    const {title, content, color} = req.body
-    if(!content){
-      return res.status(400).json({status: "error", message:"Content is required"})
-    }
-    const newNote = await Note.createNote({title, content,color})
+  try {
+    const newNote = await Note.createNote(req.body);
     res.status(201).json({
       status: "success",
       message: "Note created successfully!",
-      result:{
-        data: newNote
-      }
+      result: {
+        data: newNote,
+      },
     });
   } catch (error) {
-    res.status(500).json({status: "error", message:error.message})
+    res.status(500).json({ status: "error", message: error.message });
   }
-
 };
 
 // get a note by id
-exports.getNoteById =  async (req, res) => {
-  try{
-    const {id} = request.params
-    const idNote =  await Note.getNoteById(id)
-    console.log(idNote)
-    // if note isnt found
-    if (!note){
-      return res.status(404).json({
-        status:"error",
-        message: "Note not found!"
-      })
-    }
-    // if note is found
+exports.getNoteById = async (req, res) => {
+  try {
+    const note = await Note.getNoteById(req.params.id);
     res.status(200).json({
       status: "success",
       message: "Note fetched successfully!",
-      result:{
-        data:note
-      }
+      result: {
+        data: note,
+      },
     });
-  }catch(error){
+  } catch (error) {
     res.status(500).json({
       status: "error",
-      message: error.message
-    })
+      message: error.message,
+    });
   }
-
 };
 // update a note
-exports.updateNote = (req, res) => {
-  res.status(200).json({
-    status: "success",
-    message: "Note updated successfully!",
-  });
+exports.updateNote = async (req, res) => {
+  try {
+    const note = await Note.updateNote(req.params.id, req.body);
+    res.status(200).json({
+      status: "success",
+      message: "Note updated successfully!",
+      data: {
+        note,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "error",
+      message: err.message,
+    });
+  }
 };
 // delete a note
-exports.deleteNote = (req, res) => {
-  res.status(200).json({
-    status: "success",
-    message: "Note Deleted Successfully!",
-  });
+exports.deleteNote = async (req, res) => {
+  try {
+    await Note.deleteNote(req.params.id);
+    res.status(204).json({
+      status: "success",
+      message: "Note Deleted Successfully!",
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+
+// Favourite a note
+
+exports.favouriteNote = async (req, res) => {
+  try {
+    const note = await Note.favouriteNote(req.params.id);
+    res.status(200).json({
+      status: "success",
+      message: "Note favourite status updated successfully!",
+      data: { note },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "error",
+      message: err.message,
+    });
+  }
 };
