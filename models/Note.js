@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const noteSchema = new mongoose.Schema(
   {
     title: { type: String },
-    content: { type: String, required: true },
+    content: { type: String, required: [true, "Object cannot be empty!"] },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     color: { type: String },
@@ -56,6 +56,10 @@ noteSchema.statics.favouriteNote = async function (id) {
   return await note.save(); // Save the updated note
 };
 
+noteSchema.statics.getAllFavouriteNotes = async function () {
+  const notes = await this.find({ favourite: true });
+  return notes;
+};
 //   Note model
 const Note = mongoose.model("Note", noteSchema);
 
