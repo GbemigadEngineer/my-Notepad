@@ -1,4 +1,5 @@
 "use strict";
+const Mongoose = require("mongoose");
 const Note = require("../models/Note.js");
 //  get all notes
 exports.getAllNotes = async (req, res) => {
@@ -25,11 +26,20 @@ exports.getAllNotes = async (req, res) => {
 exports.createNote = async (req, res) => {
   try {
     // validations
+    // make sure a note must have a content and content is not an empty string
     const data = req.body;
     if (!data.content || data.content.trim() === "") {
       return res.status(400).json({
         status: "error",
         message: "A note must contain content, and content can't be empty!",
+      });
+    }
+    // make sure favourite is a boolean if inclded in the request body
+
+    if ("favourite" in data && typeof data.favourite !== "boolean") {
+      return res.status(400).json({
+        status: "error",
+        message: "Favourite must be a boolean!",
       });
     }
     // if validation is succesfull, create a note.
@@ -49,7 +59,26 @@ exports.createNote = async (req, res) => {
 // get a note by id
 exports.getNoteById = async (req, res) => {
   try {
+    // validation
+    // check if id is a valid mongodb object id
+    if (!Mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid note id!",
+      });
+    }
+
+    // fetch note from the database
     const note = await Note.getNoteById(req.params.id);
+
+    // check if note exists
+    if (!note) {
+      return res.status(404).json({
+        status: "error",
+        message: "Note not found!",
+      });
+    }
+
     res.status(200).json({
       status: "success",
       message: "Note fetched successfully!",
@@ -68,6 +97,13 @@ exports.getNoteById = async (req, res) => {
 exports.updateNote = async (req, res) => {
   try {
     // validations
+    // check if id is a valid mongodb id
+    if (!Mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid note id!",
+      });
+    }
     // check if note exists
     const noteExists = await Note.getNoteById(req.params.id);
     if (!noteExists) {
@@ -101,6 +137,25 @@ exports.updateNote = async (req, res) => {
 // delete a note
 exports.deleteNote = async (req, res) => {
   try {
+    // validation
+    // check if id is a valid mongodb object id
+    if (!Mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid note id!",
+      });
+    }
+
+    // fetch the note from the database
+    const note = await Note.getNoteById(req.params.id);
+
+    // check if the note exists
+    if (!note) {
+      return res.status(404).json({
+        status: "error",
+        message: "Note not found!",
+      });
+    }
     await Note.deleteNote(req.params.id);
     res.status(204).json({
       status: "success",
@@ -118,6 +173,25 @@ exports.deleteNote = async (req, res) => {
 
 exports.favouriteNote = async (req, res) => {
   try {
+    // validation
+    // check if id is a valid mongodb object id
+    if (!Mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid note id!",
+      });
+    }
+
+    // fetch the note from the database
+    const existNote = await Note.getNoteById(req.params.id);
+
+    // check if the note exists
+    if (!existNote) {
+      return res.status(404).json({
+        status: "error",
+        message: "Note not found!",
+      });
+    }
     const note = await Note.favouriteNote(req.params.id);
     res.status(200).json({
       status: "success",
