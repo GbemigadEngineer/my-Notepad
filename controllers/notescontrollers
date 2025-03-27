@@ -4,6 +4,9 @@ const Note = require("../models/Note.js");
 exports.getAllNotes = async (req, res) => {
   try {
     const notes = await Note.getAllNotes();
+    if (!notes) {
+      return new Error("Error getting notes from database!");
+    }
     res.status(200).json({
       status: "Success",
       message: "All notes fetched succesfully!",
@@ -21,6 +24,15 @@ exports.getAllNotes = async (req, res) => {
 // create a note
 exports.createNote = async (req, res) => {
   try {
+    // validations
+    const data = req.body;
+    if (!data.content || data.content.trim() === "") {
+      return res.status(400).json({
+        status: "error",
+        message: "A note must contain content, and content can't be empty!",
+      });
+    }
+// if validation is succesfull, create a note.
     const newNote = await Note.createNote(req.body);
     res.status(201).json({
       status: "success",
@@ -55,6 +67,9 @@ exports.getNoteById = async (req, res) => {
 // update a note
 exports.updateNote = async (req, res) => {
   try {
+    // validations
+    const id = req.params.id;
+    const data = req.body;
     const note = await Note.updateNote(req.params.id, req.body);
     res.status(200).json({
       status: "success",
@@ -123,6 +138,3 @@ exports.getAllFavouriteNotes = async (req, res) => {
     });
   }
 };
-
-
-
